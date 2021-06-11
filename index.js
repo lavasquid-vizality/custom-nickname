@@ -1,16 +1,17 @@
 import { Plugin } from '@vizality/entities';
+import { Events } from '@vizality/constants';
 import { patch, unpatchAll } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
-import { sleep } from '@vizality/util/Time';
 
 import getNick from './api/getNick';
 
 const { getGuildId } = getModule('getGuildId', 'getLastSelectedGuildId');
 
 export default class extends Plugin {
-  async start () {
-    await sleep(1000);
-    this.patch();
+  start () {
+    vizality.manager.plugins.once(Events.VIZALITY_ADDONS_READY, () => {
+      this.patch();
+    });
   }
 
   patch () {
