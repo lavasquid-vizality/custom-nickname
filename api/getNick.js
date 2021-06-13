@@ -1,7 +1,7 @@
 import React from 'react';
 import Database from '../database.json';
 
-export default (guildId, userId, height, display = 'inline-flex', mention = false) => {
+export default (guildId, userId, height, mention = false) => {
   if (userId) {
     let nick;
     if (Database.global[userId]) {
@@ -23,7 +23,7 @@ export default (guildId, userId, height, display = 'inline-flex', mention = fals
       if (nick) newNick.push(nick); nick.replace(nick, '');
       if (mention) newNick.unshift('@');
 
-      return <div style={{ display }}>{newNick}</div>;
+      return newNick;
     }
   }
 };
