@@ -74,6 +74,25 @@ export default class extends Plugin {
 
       return res;
     });
+
+    // Private Channels
+    patch(getModule(m => m?.displayName === 'PrivateChannel').prototype, 'render', (args, res) => {
+      const name = res.props.name.props.children;
+      const namePI = res.props.name.props.children[0].props?.children;
+
+      if (namePI) res.props.name.props.children[0].props.children = getNick(getGuildId(), res.props['vz-user-id'], 20) ?? namePI;
+      else if (name) res.props.name.props.children = getNick(getGuildId(), res.props['vz-user-id'], 20) ?? name;
+
+      return res;
+    });
+    patch(getModule(m => m?.default?.displayName === 'EmptyMessage'), 'default', (args, res) => {
+      const userId = args[0].children[0].props.src.match(/\/([0-9]+)\//)[1];
+      const headerName = args[0].children[1].props.children;
+      const name = args[0].children[2].props.children[0][1];
+
+      args[0].children[1].props.children = getNick(getGuildId(), userId, 40) ?? headerName;
+      args[0].children[2].props.children[0][1] = getNick(getGuildId(), userId, 20, undefined, true) ?? name;
+    }, 'before');
   }
 
   stop () {

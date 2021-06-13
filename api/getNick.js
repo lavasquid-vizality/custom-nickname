@@ -2,7 +2,7 @@ import React from 'react';
 import Database from '../database.json';
 
 export default (guildId, userId, height, display = 'inline-flex', mention = false) => {
-  if (guildId && userId) {
+  if (userId) {
     let nick;
     if (Database.global[userId]) {
       nick = Database.global[userId];
